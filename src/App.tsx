@@ -48,6 +48,7 @@ export default function App() {
 
   // Login Form State
   const [loginRole, setLoginRole] = useState("Pelapor");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -85,15 +86,15 @@ export default function App() {
 
   // Sync role switcher to role name on changes (For Admin simulator mode)
   useEffect(() => {
-    let name = "Pelapor";
+    let name = activeName;
     if (activeRole === "Pelapor") {
       name = "Pelapor";
     } else if (activeRole === "Administrator") {
       name = "Admin Sarpras";
-    } else if (activeRole === "Teknisi - Budi") {
-      name = "Budi (Teknisi)";
-    } else if (activeRole === "Teknisi - Agus") {
-      name = "Agus (Teknisi)";
+    } else if (activeRole === "Teknisi") {
+      if (name !== "Budi (Teknisi)" && name !== "Agus (Teknisi)") {
+        name = "Budi (Teknisi)";
+      }
     } else if (activeRole === "Manajer Fasilitas") {
       name = "Manajer Sarpras";
     }
@@ -162,28 +163,42 @@ export default function App() {
     e.preventDefault();
     setLoginError("");
 
-    const credentials: Record<string, string> = {
-      "Pelapor": "pelapor123",
-      "Administrator": "admin123",
-      "Teknisi - Budi": "teknisi123",
-      "Teknisi - Agus": "teknisi123",
-      "Manajer Fasilitas": "manajer123",
-    };
+    let isValid = false;
+    let name = "";
 
-    if (password !== credentials[loginRole]) {
-      setLoginError("Sandi/PIN simulasi salah. Silakan coba lagi.");
+    const userClean = username.trim().toLowerCase();
+
+    if (loginRole === "Pelapor") {
+      if (userClean === "pelapor" && password === "pelapor123") {
+        isValid = true;
+        name = "Pelapor";
+      }
+    } else if (loginRole === "Administrator") {
+      if (userClean === "admin" && password === "admin123") {
+        isValid = true;
+        name = "Admin Sarpras";
+      }
+    } else if (loginRole === "Teknisi") {
+      if (userClean === "budi" && password === "teknisi123") {
+        isValid = true;
+        name = "Budi (Teknisi)";
+      } else if (userClean === "agus" && password === "teknisi123") {
+        isValid = true;
+        name = "Agus (Teknisi)";
+      }
+    } else if (loginRole === "Manajer Fasilitas") {
+      if (userClean === "manajer" && password === "manajer123") {
+        isValid = true;
+        name = "Manajer Sarpras";
+      }
+    }
+
+    if (!isValid) {
+      setLoginError("Nama pengguna atau kata sandi simulasi salah.");
       setLoginFailed(true);
       setTimeout(() => setLoginFailed(false), 500);
       return;
     }
-
-    // Set role identity
-    let name = "Pelapor";
-    if (loginRole === "Pelapor") name = "Pelapor";
-    else if (loginRole === "Administrator") name = "Admin Sarpras";
-    else if (loginRole === "Teknisi - Budi") name = "Budi (Teknisi)";
-    else if (loginRole === "Teknisi - Agus") name = "Agus (Teknisi)";
-    else if (loginRole === "Manajer Fasilitas") name = "Manajer Sarpras";
 
     sessionStorage.setItem("isLoggedIn", "true");
     sessionStorage.setItem("activeRole", loginRole);
@@ -192,6 +207,7 @@ export default function App() {
     setActiveRole(loginRole);
     setActiveName(name);
     setIsLoggedIn(true);
+    setUsername("");
     setPassword("");
   }
 
@@ -413,10 +429,26 @@ export default function App() {
               >
                 <option value="Pelapor">Pelapor (Mahasiswa/Dosen)</option>
                 <option value="Administrator">Administrator Sarpras</option>
-                <option value="Teknisi - Budi">Teknisi: Budi (AC/Listrik)</option>
-                <option value="Teknisi - Agus">Teknisi: Agus (Kebersihan)</option>
+                <option value="Teknisi">Teknisi (Staf Perbaikan)</option>
                 <option value="Manajer Fasilitas">Manajer Fasilitas (FM)</option>
               </select>
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Nama Pengguna (Username)</label>
+              <input
+                type="text"
+                className="form-input"
+                placeholder={
+                  loginRole === "Pelapor" ? "pelapor" :
+                  loginRole === "Administrator" ? "admin" :
+                  loginRole === "Teknisi" ? "budi atau agus" :
+                  "manajer"
+                }
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+              />
             </div>
 
             <div className="form-group">
@@ -425,7 +457,12 @@ export default function App() {
                 <input
                   type={showPassword ? "text" : "password"}
                   className="form-input"
-                  placeholder={`Sandi: ${loginRole.toLowerCase().replace(/[^a-z0-9]/g, "")}123`}
+                  placeholder={
+                    loginRole === "Pelapor" ? "pelapor123" :
+                    loginRole === "Administrator" ? "admin123" :
+                    loginRole === "Teknisi" ? "teknisi123" :
+                    "manajer123"
+                  }
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -448,8 +485,12 @@ export default function App() {
                   )}
                 </button>
               </div>
-              <p style={{ fontSize: "11px", color: "var(--text-muted)", marginTop: "6px" }}>
-                Gunakan sandi simulasi: <strong>{loginRole.startsWith("Teknisi") ? "teknisi" : loginRole.toLowerCase().split(" ")[0]}123</strong>
+              <p style={{ fontSize: "11px", color: "var(--text-muted)", marginTop: "10px", lineHeight: "1.5" }}>
+                Kredensial simulasi login:<br />
+                🔑 Pelapor: <code>pelapor</code> / <code>pelapor123</code><br />
+                🔑 Admin: <code>admin</code> / <code>admin123</code><br />
+                🔑 Teknisi: <code>budi</code> atau <code>agus</code> / <code>teknisi123</code><br />
+                🔑 Manajer: <code>manajer</code> / <code>manajer123</code>
               </p>
             </div>
 
@@ -483,8 +524,8 @@ export default function App() {
             <div className="role-tabs" style={{ marginRight: "10px" }}>
               <button className={`role-tab ${(activeRole as string) === "Administrator" ? "active" : ""}`} onClick={() => setActiveRole("Administrator")}>Admin</button>
               <button className={`role-tab ${(activeRole as string) === "Pelapor" ? "active" : ""}`} onClick={() => setActiveRole("Pelapor")}>Pelapor</button>
-              <button className={`role-tab ${(activeRole as string) === "Teknisi - Budi" ? "active" : ""}`} onClick={() => setActiveRole("Teknisi - Budi")}>Budi</button>
-              <button className={`role-tab ${(activeRole as string) === "Teknisi - Agus" ? "active" : ""}`} onClick={() => setActiveRole("Teknisi - Agus")}>Agus</button>
+              <button className={`role-tab ${(activeRole as string) === "Teknisi" && activeName === "Budi (Teknisi)" ? "active" : ""}`} onClick={() => { setActiveRole("Teknisi"); setActiveName("Budi (Teknisi)"); }}>Budi</button>
+              <button className={`role-tab ${(activeRole as string) === "Teknisi" && activeName === "Agus (Teknisi)" ? "active" : ""}`} onClick={() => { setActiveRole("Teknisi"); setActiveName("Agus (Teknisi)"); }}>Agus</button>
               <button className={`role-tab ${(activeRole as string) === "Manajer Fasilitas" ? "active" : ""}`} onClick={() => setActiveRole("Manajer Fasilitas")}>Manajer</button>
             </div>
           )}
