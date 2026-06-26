@@ -9,35 +9,36 @@ description: Membuat functional requirement, non-functional requirement, user st
 Membuat functional requirement, non-functional requirement, user story, dan acceptance criteria.
 
 ## Kapan Digunakan
-Digunakan pada tahap pengerjaan proyek ketika melakukan aktivitas yang berhubungan dengan specification.
+Digunakan oleh agen AI ketika berada pada tahap pengerjaan proyek yang memerlukan aktivitas **Specification**.
 
 ## Input
 - docs/requirements/elicitation.md
 
 ## Langkah Kerja
-1. Definisikan minimal 12 Functional Requirements (FR).
-2. Definisikan minimal 6 Non-functional Requirements (NFR).
-3. Definisikan minimal 5 Business Rules (BR).
-4. Buat minimal 10 User Stories (US) dengan minimal 2 Acceptance Criteria (AC) untuk masing-masing.
-5. Berhenti jika informasi tidak cukup.
+1. Terjemahkan kebutuhan stakeholder menjadi minimal 12 Functional Requirements (FR-01 s.d FR-12) yang spesifik dan terukur.
+2. Tentukan minimal 6 Non-functional Requirements (NFR-01 s.d NFR-06) mencakup kinerja, keamanan, keandalan, kebergunaan, dll.
+3. Susun minimal 5 Business Rules (BR-01 s.d BR-05) yang mengatur alur logika bisnis (misal status awal, hak akses role).
+4. Buat minimal 10 User Stories (US-01 s.d US-10) lengkap dengan minimal 2 Acceptance Criteria (AC) untuk setiap story.
+6. Berhenti jika informasi input tidak cukup atau terjadi inkonsistensi data.
 
 ## Output
-- docs/requirements/specification.md (FR, NFR, BR, User Stories)
+- docs/requirements/specification.md (Daftar FR, NFR, BR, dan User Stories)
 
 ## Aturan
-- Jangan membuat fakta baru.
-- Tandai asumsi.
-- Gunakan ID requirement.
-- Jangan melewati scope.
+- Pastikan setiap FR, NFR, BR, dan US memiliki ID unik yang terurut.
+- Acceptance criteria harus terukur dan dapat diuji secara biner (Lulus/Gagal).
+- Selalu patuhi standar penulisan kode TypeScript dan regulasi monorepo.
+- Pastikan penomoran ID kebutuhan (FR/US/NFR) konsisten untuk memelihara traceability.
 
 ## Quality Check
-- Apakah jumlah minimum FR (12), NFR (6), BR (5), dan US (10) terpenuhi?
-- Apakah setiap US memiliki minimal 2 AC?
+- Apakah jumlah minimal FR (12), NFR (6), BR (5), dan US (10) terpenuhi?
+- Apakah setiap User Story memiliki minimal 2 Acceptance Criteria?
 
 ## Kondisi Gagal
-AI harus berhenti jika:
-- Informasi input tidak lengkap.
-- Terjadi konflik kebutuhan yang tidak dapat diselesaikan secara otomatis.
+AI harus segera menghentikan pengerjaan apabila:
+- Dokumen elicitation.md tidak ditemukan atau kebutuhan stakeholder tidak terdefinisi.
+- Terjadi kesalahan sintaksis atau konflik dependensi yang tidak dapat diselesaikan secara otomatis.
 
 ## Human Review
-- Mahasiswa/Dosen harus memeriksa kesesuaian output terhadap spesifikasi tugas.
+- Mahasiswa wajib melakukan verifikasi manual terhadap keselarasan output dokumen/kode ini terhadap rubrik penilaian tugas rekayasa perangkat lunak.
+- Reviewer/Dosen dapat memberikan catatan korektif untuk diiterasikan oleh AI kembali.

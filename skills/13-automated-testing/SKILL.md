@@ -9,33 +9,37 @@ description: Membuat unit test dan integration test.
 Membuat unit test dan integration test.
 
 ## Kapan Digunakan
-Digunakan pada tahap pengerjaan proyek ketika melakukan aktivitas yang berhubungan dengan automated testing.
+Digunakan oleh agen AI ketika berada pada tahap pengerjaan proyek yang memerlukan aktivitas **Automated Testing**.
 
 ## Input
 - docs/testing/test_plan.md
+- tests/
 
 ## Langkah Kerja
 1. Buat minimal 20 automated tests menggunakan Vitest.
-2. Uji validasi input deskripsi dan logika perubahan status di Workers.
-5. Berhenti jika informasi tidak cukup.
+2. Pisahkan konfigurasi testing ke vitest.config.ts agar terbebas dari intervensi plugin Cloudflare.
+3. Jalankan pengujian otomatis dan pastikan seluruh test berstatus PASS.
+6. Berhenti jika informasi input tidak cukup atau terjadi inkonsistensi data.
 
 ## Output
-- tests/unit/ (File unit tests)
-- tests/integration/ (File integration tests)
+- tests/unit/request-validation.test.ts
+- tests/unit/business-rules.test.ts
 
 ## Aturan
-- Jangan membuat fakta baru.
-- Tandai asumsi.
-- Gunakan ID requirement.
-- Jangan melewati scope.
+- Semua test case wajib lulus (100% PASS).
+- Skenario pengujian harus mencakup pembuktian kegagalan (negative testing) dan keberhasilan (positive testing).
+- Selalu patuhi standar penulisan kode TypeScript dan regulasi monorepo.
+- Pastikan penomoran ID kebutuhan (FR/US/NFR) konsisten untuk memelihara traceability.
 
 ## Quality Check
-- Apakah jumlah minimal 20 automated tests terpenuhi dan semuanya PASS?
+- Apakah ada minimal 20 test cases?
+- Apakah tes berjalan sukses tanpa error saat dijalankan dengan `npm test`?
 
 ## Kondisi Gagal
-AI harus berhenti jika:
-- Informasi input tidak lengkap.
-- Terjadi konflik kebutuhan yang tidak dapat diselesaikan secara otomatis.
+AI harus segera menghentikan pengerjaan apabila:
+- Test runner Vitest belum terinstal atau test plan tidak ditemukan.
+- Terjadi kesalahan sintaksis atau konflik dependensi yang tidak dapat diselesaikan secara otomatis.
 
 ## Human Review
-- Mahasiswa/Dosen harus memeriksa kesesuaian output terhadap spesifikasi tugas.
+- Mahasiswa wajib melakukan verifikasi manual terhadap keselarasan output dokumen/kode ini terhadap rubrik penilaian tugas rekayasa perangkat lunak.
+- Reviewer/Dosen dapat memberikan catatan korektif untuk diiterasikan oleh AI kembali.

@@ -9,34 +9,37 @@ description: Menyusun pertanyaan dan menemukan kebutuhan stakeholder.
 Menyusun pertanyaan dan menemukan kebutuhan stakeholder.
 
 ## Kapan Digunakan
-Digunakan pada tahap pengerjaan proyek ketika melakukan aktivitas yang berhubungan dengan elicitation.
+Digunakan oleh agen AI ketika berada pada tahap pengerjaan proyek yang memerlukan aktivitas **Elicitation**.
 
 ## Input
 - docs/requirements/inception.md
-- Feedback atau catatan wawancara awal
+- Feedback tambahan dari wawancara awal
 
 ## Langkah Kerja
-1. Rancang pertanyaan kunci untuk masing-masing aktor.
-2. Identifikasi keluhan operasional saat ini.
-3. Petakan kebutuhan fungsional tingkat tinggi dari masing-masing aktor.
-5. Berhenti jika informasi tidak cukup.
+1. Analisis peran aktor dari dokumen inception.md.
+2. Buat daftar pertanyaan terstruktur untuk menggali rasa tidak nyaman (pain points) yang dialami masing-masing aktor di lapangan.
+3. Petakan solusi kebutuhan fungsional tingkat tinggi untuk mengatasi keluhan tersebut.
+4. Tulis hasil wawancara simulasi ini ke dalam elicitation.md dengan format yang rapi dan terstruktur.
+6. Berhenti jika informasi input tidak cukup atau terjadi inkonsistensi data.
 
 ## Output
-- docs/requirements/elicitation.md (Daftar keluhan dan kebutuhan stakeholder)
+- docs/requirements/elicitation.md (Catatan Keluhan dan Kebutuhan Stakeholder)
 
 ## Aturan
-- Jangan membuat fakta baru.
-- Tandai asumsi.
-- Gunakan ID requirement.
-- Jangan melewati scope.
+- Fokus pada masalah operasional nyata (pain points) dari masing-masing peran.
+- Solusi yang diajukan harus relevan dengan batasan arsitektur sistem.
+- Selalu patuhi standar penulisan kode TypeScript dan regulasi monorepo.
+- Pastikan penomoran ID kebutuhan (FR/US/NFR) konsisten untuk memelihara traceability.
 
 ## Quality Check
-- Apakah keluhan dari setiap aktor sudah terwakili oleh solusi kebutuhan?
+- Apakah keluhan operasional masing-masing dari 4 aktor utama telah diakomodasi?
+- Apakah dokumen menggunakan bahasa Indonesia yang baik dan profesional?
 
 ## Kondisi Gagal
-AI harus berhenti jika:
-- Informasi input tidak lengkap.
-- Terjadi konflik kebutuhan yang tidak dapat diselesaikan secara otomatis.
+AI harus segera menghentikan pengerjaan apabila:
+- Dokumen inception.md tidak ditemukan atau isinya tidak memuat pemetaan aktor.
+- Terjadi kesalahan sintaksis atau konflik dependensi yang tidak dapat diselesaikan secara otomatis.
 
 ## Human Review
-- Mahasiswa/Dosen harus memeriksa kesesuaian output terhadap spesifikasi tugas.
+- Mahasiswa wajib melakukan verifikasi manual terhadap keselarasan output dokumen/kode ini terhadap rubrik penilaian tugas rekayasa perangkat lunak.
+- Reviewer/Dosen dapat memberikan catatan korektif untuk diiterasikan oleh AI kembali.

@@ -9,32 +9,34 @@ description: Menentukan bagian utama aplikasi.
 Menentukan bagian utama aplikasi.
 
 ## Kapan Digunakan
-Digunakan pada tahap pengerjaan proyek ketika melakukan aktivitas yang berhubungan dengan architecture design.
+Digunakan oleh agen AI ketika berada pada tahap pengerjaan proyek yang memerlukan aktivitas **Architecture Design**.
 
 ## Input
 - docs/requirements/specification.md
 
 ## Langkah Kerja
-1. Rancang arsitektur monorepo Full-stack (React + Workers + D1).
-2. Definisikan struktur folder proyek dan tanggung jawab masing-masing komponen.
-5. Berhenti jika informasi tidak cukup.
+1. Rancang arsitektur monorepo Full-stack (React + Cloudflare Workers + D1 Database).
+2. Buat diagram arsitektur tingkat tinggi (High-level Architecture) menggunakan format teks atau diagram mermaid.
+3. Deskripsikan peran dan tanggung jawab masing-masing folder utama (`src/`, `worker/`, `database/`, `tests/`).
+6. Berhenti jika informasi input tidak cukup atau terjadi inkonsistensi data.
 
 ## Output
-- docs/design/architecture.md (Deskripsi arsitektur monorepo)
+- docs/design/architecture.md (Deskripsi Arsitektur Monorepo)
 
 ## Aturan
-- Jangan membuat fakta baru.
-- Tandai asumsi.
-- Gunakan ID requirement.
-- Jangan melewati scope.
+- Arsitektur harus dirancang agar optimal berjalan pada platform serverless Cloudflare Workers gratis.
+- Selalu patuhi standar penulisan kode TypeScript dan regulasi monorepo.
+- Pastikan penomoran ID kebutuhan (FR/US/NFR) konsisten untuk memelihara traceability.
 
 ## Quality Check
-- Apakah pembagian struktur monorepo sudah memisahkan frontend, backend, dan DB?
+- Apakah arsitektur monorepo digambarkan dengan jelas?
+- Apakah diagram mermaid atau diagram teks mudah dibaca dan dipahami?
 
 ## Kondisi Gagal
-AI harus berhenti jika:
-- Informasi input tidak lengkap.
-- Terjadi konflik kebutuhan yang tidak dapat diselesaikan secara otomatis.
+AI harus segera menghentikan pengerjaan apabila:
+- Dokumen requirements tidak lengkap atau tidak ada.
+- Terjadi kesalahan sintaksis atau konflik dependensi yang tidak dapat diselesaikan secara otomatis.
 
 ## Human Review
-- Mahasiswa/Dosen harus memeriksa kesesuaian output terhadap spesifikasi tugas.
+- Mahasiswa wajib melakukan verifikasi manual terhadap keselarasan output dokumen/kode ini terhadap rubrik penilaian tugas rekayasa perangkat lunak.
+- Reviewer/Dosen dapat memberikan catatan korektif untuk diiterasikan oleh AI kembali.

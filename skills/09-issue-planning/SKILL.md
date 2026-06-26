@@ -9,32 +9,35 @@ description: Mengubah requirement menjadi GitHub Issues.
 Mengubah requirement menjadi GitHub Issues.
 
 ## Kapan Digunakan
-Digunakan pada tahap pengerjaan proyek ketika melakukan aktivitas yang berhubungan dengan issue planning.
+Digunakan oleh agen AI ketika berada pada tahap pengerjaan proyek yang memerlukan aktivitas **Issue Planning**.
 
 ## Input
 - docs/requirements/specification.md
 
 ## Langkah Kerja
-1. Ubah setiap fitur utama/FR menjadi minimal 10 GitHub Issues terpisah.
-2. Lengkapi detail isu dengan mengaitkan ID requirement (FR/US) dan Acceptance Criteria.
-5. Berhenti jika informasi tidak cukup.
+1. Analisis seluruh daftar FR dan User Stories.
+2. Pecah pengerjaan proyek menjadi minimal 10 GitHub Issues terpisah.
+3. Gunakan template issue standar: Judul, Deskripsi, Kaitan FR/US, Kriteria Penerimaan, Daftar Tugas, dan Kriteria Selesai.
+6. Berhenti jika informasi input tidak cukup atau terjadi inkonsistensi data.
 
 ## Output
-- Rencana pengerjaan / daftar isu GitHub (misal di docs/requirements/issues.md)
+- docs/requirements/github_issues.md (Daftar 10 GitHub Issues)
 
 ## Aturan
-- Jangan membuat fakta baru.
-- Tandai asumsi.
-- Gunakan ID requirement.
-- Jangan melewati scope.
+- Setiap issue wajib dikaitkan dengan ID requirement (FR-XX atau US-XX) untuk menjaga traceability.
+- Urutan pengerjaan harus logis (basis data & backend dahulu sebelum frontend).
+- Selalu patuhi standar penulisan kode TypeScript dan regulasi monorepo.
+- Pastikan penomoran ID kebutuhan (FR/US/NFR) konsisten untuk memelihara traceability.
 
 ## Quality Check
-- Apakah ada minimal 10 issues yang terdaftar dan terpetakan ke FR/US?
+- Apakah ada minimal 10 issues terdaftar?
+- Apakah setiap issue mengikuti format template di Bagian III PDF?
 
 ## Kondisi Gagal
-AI harus berhenti jika:
-- Informasi input tidak lengkap.
-- Terjadi konflik kebutuhan yang tidak dapat diselesaikan secara otomatis.
+AI harus segera menghentikan pengerjaan apabila:
+- Dokumen specification.md tidak ditemukan.
+- Terjadi kesalahan sintaksis atau konflik dependensi yang tidak dapat diselesaikan secara otomatis.
 
 ## Human Review
-- Mahasiswa/Dosen harus memeriksa kesesuaian output terhadap spesifikasi tugas.
+- Mahasiswa wajib melakukan verifikasi manual terhadap keselarasan output dokumen/kode ini terhadap rubrik penilaian tugas rekayasa perangkat lunak.
+- Reviewer/Dosen dapat memberikan catatan korektif untuk diiterasikan oleh AI kembali.

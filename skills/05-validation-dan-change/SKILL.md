@@ -9,34 +9,37 @@ description: Memeriksa requirement dan menganalisis perubahan.
 Memeriksa requirement dan menganalisis perubahan.
 
 ## Kapan Digunakan
-Digunakan pada tahap pengerjaan proyek ketika melakukan aktivitas yang berhubungan dengan validation dan change.
+Digunakan oleh agen AI ketika berada pada tahap pengerjaan proyek yang memerlukan aktivitas **Validation dan Change**.
 
 ## Input
 - docs/requirements/specification.md
-- Permintaan perubahan (Change Request) jika ada
+- docs/requirements/prioritization.md
 
 ## Langkah Kerja
-1. Verifikasi alur transisi status laporan agar tidak ada kondisi buntu (dead-end).
-2. Analisis dampak perubahan kebutuhan (CR) terhadap kode, database, dan testing.
-5. Berhenti jika informasi tidak cukup.
+1. Lakukan verifikasi alur transisi status laporan (Submitted -> Under Review -> Assigned -> In Progress -> Resolved -> Closed).
+2. Pastikan tidak ada alur transisi status yang mengalami jalan buntu (dead-end) atau tidak berizin.
+3. Rancang draf Change Request (CR) minimal 1 kasus untuk mendokumentasikan analisis dampak perubahan terhadap kode, database, dan testing.
+6. Berhenti jika informasi input tidak cukup atau terjadi inkonsistensi data.
 
 ## Output
-- docs/requirements/validation.md (Verifikasi alur logika status)
-- docs/requirements/change_request.md (Draf CR)
+- docs/requirements/validation.md (Verifikasi Alur Status)
+- docs/requirements/change_request.md (Draf Analisis Perubahan)
 
 ## Aturan
-- Jangan membuat fakta baru.
-- Tandai asumsi.
-- Gunakan ID requirement.
-- Jangan melewati scope.
+- Alur transisi status harus digambarkan secara visual atau kronologis yang logis.
+- Dokumen Change Request harus memiliki ID (misal CR-01) dan status persetujuan.
+- Selalu patuhi standar penulisan kode TypeScript dan regulasi monorepo.
+- Pastikan penomoran ID kebutuhan (FR/US/NFR) konsisten untuk memelihara traceability.
 
 ## Quality Check
-- Apakah alur transisi status sudah logis dari Submitted hingga Closed?
+- Apakah transisi status dari awal hingga akhir digambarkan secara logis?
+- Apakah analisis dampak pada change_request.md mencantumkan pengaruhnya terhadap kode & test?
 
 ## Kondisi Gagal
-AI harus berhenti jika:
-- Informasi input tidak lengkap.
-- Terjadi konflik kebutuhan yang tidak dapat diselesaikan secara otomatis.
+AI harus segera menghentikan pengerjaan apabila:
+- File specification.md tidak ditemukan.
+- Terjadi kesalahan sintaksis atau konflik dependensi yang tidak dapat diselesaikan secara otomatis.
 
 ## Human Review
-- Mahasiswa/Dosen harus memeriksa kesesuaian output terhadap spesifikasi tugas.
+- Mahasiswa wajib melakukan verifikasi manual terhadap keselarasan output dokumen/kode ini terhadap rubrik penilaian tugas rekayasa perangkat lunak.
+- Reviewer/Dosen dapat memberikan catatan korektif untuk diiterasikan oleh AI kembali.
