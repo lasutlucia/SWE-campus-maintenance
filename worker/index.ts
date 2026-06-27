@@ -30,8 +30,8 @@ export default {
     // POST /api/login
     if (url.pathname === "/api/login" && request.method === "POST") {
       try {
-        const body = await request.json() as { username?: string; password?: string };
-        const { username, password } = body;
+        const body = await request.json() as { username?: string; password?: string; role?: string };
+        const { username, password, role } = body;
 
         if (!username || !password) {
           return json({ error: "Username dan password wajib diisi." }, 400);
@@ -44,6 +44,25 @@ export default {
 
         if (!user) {
           return json({ error: "Username atau password salah." }, 401);
+        }
+
+        // Validate if selected role matches database role
+        const dbRole = user.role ? user.role.toUpperCase().trim() : "";
+        const reqRole = role ? role.toUpperCase().trim() : "";
+
+        let matched = false;
+        if (reqRole === "PELAPOR") {
+          matched = (dbRole === "MAHASISWA" || dbRole === "DOSEN" || dbRole === "PELAPOR");
+        } else if (reqRole === "ADMINISTRATOR") {
+          matched = (dbRole === "ADMINISTRATOR" || dbRole === "ADMIN");
+        } else if (reqRole === "TEKNISI") {
+          matched = (dbRole === "TEKNISI");
+        } else if (reqRole === "MANAJER FASILITAS" || reqRole === "MANAJER" || reqRole === "MANAGER") {
+          matched = (dbRole === "MANAJER" || dbRole === "MANAGER");
+        }
+
+        if (!matched) {
+          return json({ error: "Akun Anda tidak terdaftar sebagai peran " + (role || "") + "." }, 401);
         }
 
         return json({

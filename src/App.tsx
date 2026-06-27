@@ -47,6 +47,7 @@ export default function App() {
   const [activeName, setActiveName] = useState(() => sessionStorage.getItem("activeName") || "Pelapor");
 
   // Login Form State
+  const [loginRole, setLoginRole] = useState("Pelapor");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
@@ -155,7 +156,7 @@ export default function App() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username, password, role: loginRole }),
       });
 
       const result = await response.json();
@@ -406,6 +407,19 @@ export default function App() {
           )}
 
           <form onSubmit={handleLogin}>
+            <div className="form-group">
+              <label className="form-label">Pilih Peran Anda</label>
+              <select
+                className="form-select"
+                value={loginRole}
+                onChange={(e) => setLoginRole(e.target.value)}
+              >
+                <option value="Pelapor">Pelapor (Mahasiswa/Dosen)</option>
+                <option value="Administrator">Administrator Sarpras</option>
+                <option value="Teknisi">Teknisi (Staf Perbaikan)</option>
+                <option value="Manajer Fasilitas">Manajer Fasilitas (FM)</option>
+              </select>
+            </div>
             <div className="form-group">
               <label className="form-label">Nama Pengguna (Username)</label>
               <input
