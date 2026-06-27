@@ -39,8 +39,8 @@ export default {
 
         const hashed = await sha256(password);
         const user = await env.DB.prepare(
-          "SELECT role, fullname FROM users WHERE username = ? AND (password_hash = ? OR password_hash = ?)"
-        ).bind(username.trim().toLowerCase(), hashed, password).first() as { role: string; fullname: string } | null;
+          "SELECT role, fullname FROM users WHERE LOWER(username) = LOWER(?) AND (password_hash = ? OR password_hash = ?)"
+        ).bind(username.trim(), hashed, password).first() as { role: string; fullname: string } | null;
 
         if (!user) {
           return json({ error: "Username atau password salah." }, 401);
