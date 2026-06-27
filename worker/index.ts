@@ -66,9 +66,9 @@ export default {
       const params: string[] = [];
 
       if (search) {
-        query += " AND (title LIKE ? OR location LIKE ? OR request_number LIKE ?)";
+        query += " AND (title LIKE ? OR location LIKE ? OR request_number LIKE ? OR category LIKE ?)";
         const wildcard = `%${search}%`;
-        params.push(wildcard, wildcard, wildcard);
+        params.push(wildcard, wildcard, wildcard, wildcard);
       }
       if (status) {
         query += " AND status = ?";

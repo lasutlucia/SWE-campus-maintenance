@@ -68,7 +68,7 @@ export default function App() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
-  const [category, setCategory] = useState("AC");
+  const [category, setCategory] = useState("");
 
   // Comment Text
   const [commentText, setCommentText] = useState("");
@@ -232,7 +232,7 @@ export default function App() {
       setTitle("");
       setDescription("");
       setLocation("");
-      setCategory("AC");
+      setCategory("");
       await loadRequests();
     } catch (err) {
       setErrorMessage("Terjadi kesalahan jaringan saat mengirim laporan.");
@@ -685,17 +685,14 @@ export default function App() {
                   </div>
                   <div className="form-group">
                     <label className="form-label">Kategori Kerusakan</label>
-                    <select
-                      className={`form-select ${category ? "valid" : ""}`}
+                    <input
+                      type="text"
+                      className={`form-input ${category.trim().length > 0 ? "valid" : ""}`}
+                      placeholder="Masukkan kategori (contoh: Listrik, AC, Kebersihan, dll.)"
                       value={category}
                       onChange={(e) => setCategory(e.target.value)}
-                    >
-                      <option value="AC">AC (Pendingin Ruang)</option>
-                      <option value="Listrik">Listrik & Lampu</option>
-                      <option value="Internet">Internet / Wi-Fi</option>
-                      <option value="Kebersihan">Kebersihan</option>
-                      <option value="Sipil">Mebel & Dinding</option>
-                    </select>
+                      required
+                    />
                   </div>
                   <button type="submit" className="button-primary" disabled={isSubmitting}>
                     {isSubmitting ? (
