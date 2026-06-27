@@ -838,7 +838,7 @@ export default function App() {
               <input
                 type="text"
                 className="form-input search-input"
-                placeholder="Cari nomor tiket, laporan, lokasi..."
+                placeholder="Cari nomor tiket, judul, lokasi..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
