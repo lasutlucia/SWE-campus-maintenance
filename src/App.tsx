@@ -275,6 +275,30 @@ export default function App() {
     }
   }
 
+  // Reporter confirms resolution
+  async function handleConfirmResolved() {
+    if (!selectedRequestId) return;
+    try {
+      const response = await fetch(`/api/requests/${selectedRequestId}/comments`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-User-Role": activeRole,
+          "X-User-Name": activeName,
+        },
+        body: JSON.stringify({ content: "Pelapor mengonfirmasi bahwa perbaikan telah selesai dilaksanakan dengan baik." }),
+      });
+      if (response.ok) {
+        setSuccessMessage("Terima kasih! Konfirmasi perbaikan Anda telah berhasil dicatat.");
+        loadRequestDetail(selectedRequestId);
+      } else {
+        setErrorMessage("Gagal mengirimkan konfirmasi.");
+      }
+    } catch (err) {
+      setErrorMessage("Terjadi kesalahan jaringan saat mengirim konfirmasi.");
+    }
+  }
+
   // Update Status / Priority / Category / Assignee
   async function handleUpdateStatus(
     statusUpdate?: string,
@@ -1113,9 +1137,34 @@ export default function App() {
 
                 {/* Pelapor Role message info */}
                 {activeRole === "Pelapor" && (
-                  <p className="text-secondary" style={{ fontSize: "13px" }}>
-                    Status laporan ini diproses oleh Administrator Sarpras. Anda dapat memberikan komentar balasan pada kotak diskusi di bawah ini.
-                  </p>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                    <p className="text-secondary" style={{ fontSize: "13px" }}>
+                      Status laporan ini diproses oleh Administrator Sarpras. Anda dapat memberikan komentar balasan pada kotak diskusi di bawah ini.
+                    </p>
+                    {detailData.request.status === "RESOLVED" && (
+                      <div style={{ marginTop: "8px", padding: "12px", background: "rgba(16, 185, 129, 0.08)", border: "1px solid rgba(16, 185, 129, 0.2)", borderRadius: "8px" }}>
+                        {detailData.comments?.some(c => c.author_role === "Pelapor" && c.content.includes("mengonfirmasi bahwa perbaikan")) ? (
+                          <div style={{ color: "#34d399", fontWeight: "700", fontSize: "13.5px", display: "flex", alignItems: "center", gap: "6px" }}>
+                            <span>✓</span> Anda telah memberikan konfirmasi selesai untuk laporan ini.
+                          </div>
+                        ) : (
+                          <>
+                            <p className="text-secondary" style={{ fontSize: "13px", marginBottom: "10px", color: "#6ee7b7" }}>
+                              Teknisi telah menyelesaikan perbaikan. Silakan klik tombol di bawah untuk memberikan konfirmasi jika masalah sudah teratasi dengan baik.
+                            </p>
+                            <button
+                              type="button"
+                              className="button-primary"
+                              style={{ background: "linear-gradient(135deg, #10b981 0%, #059669 100%)", boxShadow: "0 4px 15px rgba(16, 185, 129, 0.25)" }}
+                              onClick={handleConfirmResolved}
+                            >
+                              Konfirmasi Perbaikan Selesai
+                            </button>
+                          </>
+                        )}
+                      </div>
+                    )}
+                  </div>
                 )}
 
                 {/* Facility Manager info */}
