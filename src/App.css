@@ -959,3 +959,73 @@ body {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Premium Role Selection Grid & Card Buttons */
+.role-selection-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.role-button {
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-primary);
+  border: 1px solid var(--panel-border);
+  padding: 18px 24px;
+  border-radius: var(--radius-md);
+  font-family: var(--font-family);
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.role-button:hover {
+  background: var(--accent-gradient);
+  border-color: transparent;
+  transform: translateY(-2.5px);
+  box-shadow: 0 10px 25px rgba(99, 102, 241, 0.35);
+}
+
+.role-button:active {
+  transform: translateY(0);
+}
+
+.role-button-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.role-button-arrow {
+  transition: transform 0.3s ease;
+}
+
+.role-button:hover .role-button-arrow {
+  transform: translateX(4px);
+}
+
+.back-to-roles-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  font-weight: 700;
+  font-size: 13.5px;
+  cursor: pointer;
+  margin-bottom: 24px;
+  transition: color 0.2s;
+  padding: 0;
+}
+
+.back-to-roles-btn:hover {
+  color: var(--text-primary);
+}
+
