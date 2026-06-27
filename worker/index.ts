@@ -2,6 +2,13 @@ interface Env {
   DB: D1Database;
 }
 
+async function sha256(message: string): Promise<string> {
+  const msgBuffer = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+}
+
 function json(data: unknown, status = 200) {
   return Response.json(data, {
     status,
@@ -18,6 +25,34 @@ export default {
     // 1. GET /api/health
     if (url.pathname === "/api/health" && request.method === "GET") {
       return json({ status: "ok" });
+    }
+
+    // POST /api/login
+    if (url.pathname === "/api/login" && request.method === "POST") {
+      try {
+        const body = await request.json() as { username?: string; password?: string };
+        const { username, password } = body;
+
+        if (!username || !password) {
+          return json({ error: "Username dan password wajib diisi." }, 400);
+        }
+
+        const hashed = await sha256(password);
+        const user = await env.DB.prepare(
+          "SELECT role, fullname FROM users WHERE username = ? AND (password_hash = ? OR password_hash = ?)"
+        ).bind(username.trim().toLowerCase(), hashed, password).first() as { role: string; fullname: string } | null;
+
+        if (!user) {
+          return json({ error: "Username atau password salah." }, 401);
+        }
+
+        return json({
+          role: user.role,
+          name: user.fullname
+        });
+      } catch (err: any) {
+        return json({ error: "Terjadi kesalahan server saat mencoba login: " + err.message }, 500);
+      }
     }
 
     // 2. GET /api/requests
