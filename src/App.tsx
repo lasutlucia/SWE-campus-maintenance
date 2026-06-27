@@ -101,7 +101,7 @@ export default function App() {
       if (statusFilter) url.searchParams.set("status", statusFilter);
       if (categoryFilter) url.searchParams.set("category", categoryFilter);
 
-      if (activeRole.startsWith("Teknisi -")) {
+      if (activeRole.startsWith("Teknisi")) {
         url.searchParams.set("technician", activeName);
       }
 
