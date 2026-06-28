@@ -1039,3 +1039,31 @@ body {
   box-shadow: inset 4px 0 0 var(--accent-color);
 }
 
+/* Action button for opening comment panel in tables */
+.comment-btn-action {
+  padding: 6px 12px;
+  font-size: 12.5px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(99, 102, 241, 0.08);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  color: var(--accent-color);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.comment-btn-action:hover {
+  background: var(--accent-gradient);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+  transform: translateY(-1px);
+}
+
+.comment-btn-action:active {
+  transform: translateY(0);
+}
+
