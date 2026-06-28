@@ -1029,3 +1029,13 @@ body {
   color: var(--text-primary);
 }
 
+/* Disable hover pointer and highlight effects for non-clickable tables (e.g. Pelapor) */
+.premium-table.non-clickable tbody tr {
+  cursor: default !important;
+}
+
+.premium-table.non-clickable tbody tr:hover td {
+  background: transparent !important;
+  color: var(--text-primary) !important;
+}
+

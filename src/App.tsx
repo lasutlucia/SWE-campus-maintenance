@@ -903,7 +903,7 @@ export default function App() {
             </div>
 
             <div className="table-container">
-              <table className="premium-table">
+              <table className={`premium-table ${activeRole === "Pelapor" ? "non-clickable" : ""}`}>
                 <thead>
                   <tr>
                     <th>No. Tiket</th>
@@ -922,7 +922,11 @@ export default function App() {
                     </tr>
                   ) : (
                     requests.map((req) => (
-                      <tr key={req.id} onClick={() => setSelectedRequestId(req.id)}>
+                      <tr 
+                        key={req.id} 
+                        onClick={activeRole === "Pelapor" ? undefined : () => setSelectedRequestId(req.id)}
+                        style={activeRole === "Pelapor" ? { cursor: "default" } : undefined}
+                      >
                         <td className="text-bold">{req.request_number}</td>
                         <td>{req.title}</td>
                         <td>{req.location}</td>
@@ -947,7 +951,7 @@ export default function App() {
       )}
 
       {/* Selected request detail visual modal panel */}
-      {selectedRequestId && detailData && (
+      {selectedRequestId && detailData && activeRole !== "Pelapor" && (
         <div className="detail-layout">
           {/* Main detailed view container */}
           <div className="detail-main">
