@@ -1,56 +1,65 @@
 # UI Flow - Campus Service Request and Maintenance System
 
-Dokumen ini mendeskripsikan alur antarmuka pengguna (UI Flow) dan perubahan status halaman untuk masing-masing peran aktor.
+Dokumen ini mendeskripsikan alur antarmuka pengguna (UI Flow) dan alur navigasi halaman berdasarkan peran aktor yang sedang aktif.
 
-## Navigasi Global
-Halaman web menggunakan header statis yang memuat **Role Switcher** di bagian kanan atas. Tombol switcher ini mensimulasikan sesi pengguna yang aktif. Berpindah peran akan secara dinamis menyembunyikan/menampilkan komponen yang relevan di bawah ini:
+## Alur Navigasi Masuk (Authentication Flow)
+Sistem menggunakan **Halaman Login Database-Driven (Dua Tahap)** sebelum pengguna dapat masuk ke Dashboard masing-masing:
 
 ```
-                  ┌───────────────────────────────┐
-                  │          Role Switcher        │
-                  └──────────────┬────────────────┘
-                                 │
-         ┌───────────────────────┼─────────────────────────┐
-         ▼                       ▼                         ▼
-    [Pelapor UI]              [Admin UI]              [Teknisi UI]
-  - Form Kirim Laporan      - List Semua Laporan     - List Tugas Khusus
-  - List Laporan Saya       - Filter & Pencarian     - Tombol Mulai Kerja
-  - Kolom Komentar          - Dropdown Prioritas     - Tombol Selesai
-                            - Assign Teknisi
-                            - Tombol Close Tiket
+                  ┌───────────────────────────────────┐
+                  │ Halaman Login Tahap 1: Pilih Role │
+                  │  [Pelapor] [Teknisi] [Admin] [FM] │
+                  └─────────────────┬─────────────────┘
+                                    │
+                                    ▼
+                  ┌───────────────────────────────────┐
+                  │ Halaman Login Tahap 2: Kredensial │
+                  │     Input Username & Password     │
+                  └─────────────────┬─────────────────┘
+                                    │
+                         (Autentikasi Database D1)
+                                    ▼
+                   ┌─────────────────────────────────┐
+                   │    Masuk ke Dashboard Utama     │
+                   └─────────────────────────────────┘
 ```
+
+---
 
 ## Alur Halaman Per Aktor
 
-### 1. Alur Pelapor
-1. Pengguna membuka halaman web utama.
-2. Pada panel kiri, Pelapor mengisi form pengaduan (Judul, Deskripsi, Lokasi, Kategori) lalu menekan tombol **Kirim Pengaduan**.
-3. Laporan yang dikirim akan langsung muncul di panel sebelah kanan pada **Daftar Laporan Pengaduan** dengan status `SUBMITTED`.
-4. Pelapor dapat mengklik baris laporan untuk membuka panel **Detail Laporan** di bagian bawah.
-5. Di dalam panel detail, Pelapor dapat melihat status, riwayat penanganan, komentar yang ada, serta menuliskan komentar baru pada kolom komentar.
+### 1. Alur Pelapor (Mahasiswa / Dosen)
+1. Pelapor memilih opsi login Pelapor dan memasukkan kredensial terdaftar (misal: `Lucia` / `lucia123`).
+2. **Dashboard Pelapor**:
+   * **Panel Kiri**: Form pembuatan laporan dengan input Laporan Kerusakan (Judul), Deskripsi Masalah (Min 20 Karakter), Lokasi Gedung, dan Lokasi Ruangan secara terpisah. Kategori dihilangkan dari isian pelapor.
+   * **Panel Kanan**: Daftar laporan pengaduan tanpa dropdown filter (filter disembunyikan agar bersih).
+3. Pelapor dapat mengklik baris laporan atau tombol aksi cepat `💬 Komentar` untuk memuat panel detail aduan sederhana (stepper status, linimasa audit, dan menu aksi disembunyikan untuk Pelapor).
+4. Pelapor dapat melihat percakapan komentar dari seluruh peran dan memberikan komentar balasan secara langsung.
+5. Pelapor dapat menekan tombol **"Konfirmasi Perbaikan Selesai"** ketika aduan telah berstatus `RESOLVED`.
 
 ### 2. Alur Administrator
-1. Admin memilih peran "Administrator" pada switcher.
-2. Halaman memuat daftar seluruh laporan dari semua civitas akademika.
-3. Admin melakukan pencarian atau penyaringan menggunakan input teks dan dropdown filter di panel daftar.
-4. Admin mengklik salah satu laporan baru untuk membuka **Detail Laporan**.
-5. Pada detail laporan berstatus `SUBMITTED`, Admin mengklik tombol **Mulai Review Laporan** (status berubah menjadi `UNDER REVIEW`).
-6. Admin menyesuaikan tingkat prioritas (`LOW`/`MEDIUM`/`HIGH`) dan kategori jika dirasa kurang sesuai.
-7. Admin menugaskan teknisi pelaksana perbaikan via dropdown. Tindakan ini secara otomatis mengubah status menjadi `ASSIGNED`.
-8. Setelah teknisi menyelesaikan pekerjaan (status `RESOLVED`), Admin meninjau perbaikan lalu menekan tombol **Tutup Tiket Laporan (Closed)** untuk menutup tiket (status menjadi `CLOSED`).
+1. Admin masuk menggunakan kredensial (misal: `Administrator` / `admin123`).
+2. **Dashboard Administrator**:
+   * Menampilkan daftar seluruh laporan secara lengkap dengan fitur pencarian teks pintar (mengurutkan aduan tercocok di posisi teratas dengan efek visual click-illusion).
+3. Admin mengklik baris aduan berstatus `SUBMITTED` untuk memuat detail laporan.
+4. Admin menekan tombol **"Start Review"** untuk mengubah status laporan dari `SUBMITTED` menjadi `UNDER REVIEW`.
+5. Admin menunjuk staf teknisi pelaksana melalui dropdown yang diambil secara dinamis dari database D1 (termasuk teknisi `Andi`).
+6. Menyimpan penugasan secara otomatis memicu alur status menjadi `ASSIGNED`.
+7. Setelah teknisi menyelesaikan tugas (status `RESOLVED`), Admin meninjau perbaikan dan menekan tombol **"Close Report"** untuk merubah status final laporan menjadi `CLOSED`.
 
-### 3. Alur Teknisi
-1. Teknisi memilih peran "Teknisi: Budi" atau "Teknisi: Agus" pada switcher.
-2. Halaman secara dinamis menyaring dan memuat hanya laporan yang ditugaskan ke nama teknisi tersebut.
-3. Teknisi mengklik laporan berstatus `ASSIGNED` untuk membuka **Detail Laporan**.
-4. Teknisi mengklik tombol **Mulai Bekerja (In Progress)** untuk menandai pekerjaan dimulai (status berubah menjadi `IN PROGRESS`).
-5. Setelah perbaikan selesai di lapangan, Teknisi mengklik tombol **Tandai Selesai (Resolved)** (status berubah menjadi `RESOLVED`).
-6. Teknisi dapat menulis komentar teknis di kolom komentar untuk melapor kendala atau detail suku cadang.
+### 3. Alur Staf Teknisi
+1. Teknisi masuk menggunakan kredensial terdaftar (misal: `Andi` / `andi123`).
+2. **Dashboard Teknisi**:
+   * Menampilkan seluruh daftar laporan (akses menyeluruh tanpa filterisasi tugas personal agar dapat memantau aduan unassigned baru yang masuk secara real-time).
+3. Teknisi mengklik baris tugas yang didelegasikan padanya untuk memuat detail laporan.
+4. Sebelum memulai pengerjaan, Teknisi **wajib menentukan tingkat prioritas** (`LOW`, `MEDIUM`, `HIGH`) melalui dropdown aksi khusus di panel Teknisi, lalu mengklik tombol **"Mulai Bekerja"** (status berubah menjadi `IN PROGRESS`).
+5. Setelah perbaikan selesai di lapangan, Teknisi mengklik tombol **"Selesai Perbaikan"** (status berubah menjadi `RESOLVED`).
+6. Teknisi dapat mengirim komentar teknis/catatan perbaikan di panel percakapan komentar.
 
-### 4. Alur Manajer Fasilitas
-1. Manajer memilih peran "Manajer Fasilitas" pada switcher.
-2. Halaman memuat tiga kartu statistik utama:
-   - **Total Pengaduan**: Keseluruhan laporan.
-   - **Dalam Penanganan**: Laporan berstatus Under Review, Assigned, dan In Progress.
-   - **Selesai / Ditutup**: Laporan berstatus Resolved dan Closed.
-3. Manajer Fasilitas dapat memantau data seluruh laporan melalui tabel ringkasan yang tersedia. Tampilan ini bersifat *read-only* (tidak menyediakan tombol aksi).
+### 4. Alur Manajer Fasilitas (FM View)
+1. Manajer masuk menggunakan kredensial terdaftar (`Manajer` / `manajer123`).
+2. **Dashboard Manajer**:
+   * Menampilkan tiga kartu metrik ringkasan status real-time (Total Laporan, Dalam Pengerjaan, Tuntas Terselesaikan).
+   * Menampilkan bar persentase kontribusi laporan berdasarkan kategori fasilitas kampus.
+   * Menampilkan tabel ringkasan laporan kampus (*read-only monitoring view*).
+3. Manajer dapat memantau log audit status alur kerja dan seluruh percakapan komentar secara real-time.
