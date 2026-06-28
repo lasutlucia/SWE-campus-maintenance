@@ -51,14 +51,18 @@ export default {
         const reqRole = role ? role.toUpperCase().trim() : "";
 
         let matched = false;
-        if (reqRole === "PELAPOR") {
+        if (dbRole === reqRole) {
+          matched = true;
+        } else if (reqRole === "PELAPOR") {
           matched = (dbRole === "MAHASISWA" || dbRole === "DOSEN" || dbRole === "PELAPOR");
         } else if (reqRole === "ADMINISTRATOR") {
           matched = (dbRole === "ADMINISTRATOR" || dbRole === "ADMIN");
         } else if (reqRole === "TEKNISI") {
-          matched = (dbRole === "TEKNISI");
+          matched = (dbRole === "TEKNISI" || dbRole === "TECHNICIAN");
         } else if (reqRole === "MANAJER FASILITAS" || reqRole === "MANAJER" || reqRole === "MANAGER") {
-          matched = (dbRole === "MANAJER" || dbRole === "MANAGER");
+          matched = (dbRole === "MANAJER" || dbRole === "MANAGER" || dbRole === "MANAJER FASILITAS" || dbRole === "FACILITY MANAGER");
+        } else if (dbRole.includes(reqRole) || reqRole.includes(dbRole)) {
+          matched = true;
         }
 
         if (!matched) {
