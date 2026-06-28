@@ -383,14 +383,20 @@ export default function App() {
 
   function formatDate(isoString: string) {
     if (!isoString) return "";
-    const date = new Date(isoString);
+    let parsedString = isoString.trim();
+    // Normalize SQLite YYYY-MM-DD HH:MM:SS format to ISO-8601 YYYY-MM-DDTHH:MM:SSZ (UTC)
+    if (!parsedString.includes("Z") && !parsedString.includes("+")) {
+      parsedString = parsedString.replace(" ", "T") + "Z";
+    }
+    const date = new Date(parsedString);
     return date.toLocaleString("id-ID", {
+      timeZone: "Asia/Makassar", // WITA timezone (UTC+8)
       day: "numeric",
       month: "short",
       year: "numeric",
       hour: "2-digit",
       minute: "2-digit"
-    });
+    }) + " WITA";
   }
 
   // Stepper helper
