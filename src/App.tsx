@@ -152,6 +152,15 @@ export default function App() {
   }, [searchQuery, activeRole, activeName, isLoggedIn]);
 
   useEffect(() => {
+    if (searchQuery && requests.length > 0 && activeRole !== "Pelapor") {
+      const sorted = getSortedRequests();
+      if (sorted.length > 0) {
+        setSelectedRequestId(sorted[0].id);
+      }
+    }
+  }, [searchQuery, requests, activeRole]);
+
+  useEffect(() => {
     if (selectedRequestId && isLoggedIn) {
       loadRequestDetail(selectedRequestId);
     }
@@ -401,6 +410,27 @@ export default function App() {
     const count = requests.filter(r => r.category === catName).length;
     const percentage = totalCount > 0 ? (count / totalCount) * 100 : 0;
     return { count, percentage };
+  }
+
+  // Get sorted requests for search priority
+  function getSortedRequests() {
+    if (!searchQuery) return requests;
+    const query = searchQuery.toLowerCase().trim();
+    return [...requests].sort((a, b) => {
+      const aTitle = (a.title || "").toLowerCase();
+      const bTitle = (b.title || "").toLowerCase();
+      const aLoc = (a.location || "").toLowerCase();
+      const bLoc = (b.location || "").toLowerCase();
+      const aNum = (a.request_number || "").toLowerCase();
+      const bNum = (b.request_number || "").toLowerCase();
+
+      const aContains = aTitle.includes(query) || aLoc.includes(query) || aNum.includes(query);
+      const bContains = bTitle.includes(query) || bLoc.includes(query) || bNum.includes(query);
+
+      if (aContains && !bContains) return -1;
+      if (!aContains && bContains) return 1;
+      return 0;
+    });
   }
 
   // Render Login screen if not authenticated
@@ -708,8 +738,12 @@ export default function App() {
                         </td>
                       </tr>
                     ) : (
-                      requests.map((req) => (
-                        <tr key={req.id} onClick={() => setSelectedRequestId(req.id)}>
+                      getSortedRequests().map((req) => (
+                        <tr 
+                          key={req.id} 
+                          className={selectedRequestId === req.id ? "active-row" : ""}
+                          onClick={() => setSelectedRequestId(req.id)}
+                        >
                           <td className="text-bold">{req.request_number}</td>
                           <td>{req.title}</td>
                           <td>{req.location}</td>
@@ -886,9 +920,10 @@ export default function App() {
                       </td>
                     </tr>
                   ) : (
-                    requests.map((req) => (
+                    getSortedRequests().map((req) => (
                       <tr 
                         key={req.id} 
+                        className={selectedRequestId === req.id ? "active-row" : ""}
                         onClick={activeRole === "Pelapor" ? undefined : () => setSelectedRequestId(req.id)}
                         style={activeRole === "Pelapor" ? { cursor: "default" } : undefined}
                       >
