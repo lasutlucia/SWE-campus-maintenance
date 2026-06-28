@@ -60,8 +60,6 @@ export default function App() {
   const [requests, setRequests] = useState<ServiceRequest[]>([]);
   const [dbTechnicians, setDbTechnicians] = useState<{ username: string; fullname: string }[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("");
 
   // Detail Modal / Panel
   const [selectedRequestId, setSelectedRequestId] = useState<string | null>(null);
@@ -101,8 +99,6 @@ export default function App() {
     try {
       const url = new URL("/api/requests", window.location.origin);
       if (searchQuery) url.searchParams.set("search", searchQuery);
-      if (statusFilter) url.searchParams.set("status", statusFilter);
-      if (categoryFilter) url.searchParams.set("category", categoryFilter);
 
       if (activeRole.startsWith("Teknisi")) {
         url.searchParams.set("technician", activeName);
@@ -153,7 +149,7 @@ export default function App() {
       loadRequests();
       loadTechnicians();
     }
-  }, [searchQuery, statusFilter, categoryFilter, activeRole, activeName, isLoggedIn]);
+  }, [searchQuery, activeRole, activeName, isLoggedIn]);
 
   useEffect(() => {
     if (selectedRequestId && isLoggedIn) {
@@ -857,43 +853,12 @@ export default function App() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
-              {activeRole !== "Pelapor" && (
-                <>
-                  <select
-                    className="form-select filter-select"
-                    value={statusFilter}
-                    onChange={(e) => setStatusFilter(e.target.value)}
-                  >
-                    <option value="">⚙️ Semua Status</option>
-                    <option value="SUBMITTED">📥 Submitted</option>
-                    <option value="UNDER REVIEW">🔍 Under Review</option>
-                    <option value="ASSIGNED">📋 Assigned</option>
-                    <option value="IN PROGRESS">🛠️ In Progress</option>
-                    <option value="RESOLVED">✅ Resolved</option>
-                    <option value="CLOSED">🔒 Closed</option>
-                  </select>
-                  <select
-                    className="form-select filter-select"
-                    value={categoryFilter}
-                    onChange={(e) => setCategoryFilter(e.target.value)}
-                  >
-                    <option value="">📂 Semua Kategori</option>
-                    <option value="AC">❄️ AC</option>
-                    <option value="Listrik">⚡ Listrik</option>
-                    <option value="Internet">🌐 Internet</option>
-                    <option value="Kebersihan">🧹 Kebersihan</option>
-                    <option value="Sipil">🧱 Sipil</option>
-                  </select>
-                </>
-              )}
-              {(searchQuery || statusFilter || categoryFilter) && (
+              {searchQuery && (
                 <button
                   type="button"
                   className="button-clear-filters"
                   onClick={() => {
                     setSearchQuery("");
-                    setStatusFilter("");
-                    setCategoryFilter("");
                   }}
                   title="Bersihkan Filter"
                 >
