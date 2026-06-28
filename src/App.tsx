@@ -902,7 +902,7 @@ export default function App() {
             </div>
 
             <div className="table-container">
-              <table className={`premium-table ${activeRole === "Pelapor" ? "non-clickable" : ""}`}>
+              <table className="premium-table">
                 <thead>
                   <tr>
                     <th>No. Tiket</th>
@@ -924,8 +924,7 @@ export default function App() {
                       <tr 
                         key={req.id} 
                         className={selectedRequestId === req.id ? "active-row" : ""}
-                        onClick={activeRole === "Pelapor" ? undefined : () => setSelectedRequestId(req.id)}
-                        style={activeRole === "Pelapor" ? { cursor: "default" } : undefined}
+                        onClick={() => setSelectedRequestId(req.id)}
                       >
                         <td className="text-bold">{req.request_number}</td>
                         <td>{req.title}</td>
@@ -951,7 +950,7 @@ export default function App() {
       )}
 
       {/* Selected request detail visual modal panel */}
-      {selectedRequestId && detailData && activeRole !== "Pelapor" && (
+      {selectedRequestId && detailData && (
         <div className="detail-layout">
           {/* Main detailed view container */}
           <div className="detail-main">
@@ -972,85 +971,97 @@ export default function App() {
             </div>
 
             {/* Stepper showing state transition flow */}
-            <div className="workflow-stepper">
-              <div className={getStepClass("SUBMITTED", detailData.request.status)}>
-                <div className="step-dot">1</div>
-                <span className="step-label">Submitted</span>
+            {activeRole !== "Pelapor" && (
+              <div className="workflow-stepper">
+                <div className={getStepClass("SUBMITTED", detailData.request.status)}>
+                  <div className="step-dot">1</div>
+                  <span className="step-label">Submitted</span>
+                </div>
+                <div className={getStepClass("UNDER REVIEW", detailData.request.status)}>
+                  <div className="step-dot">2</div>
+                  <span className="step-label">Review</span>
+                </div>
+                <div className={getStepClass("ASSIGNED", detailData.request.status)}>
+                  <div className="step-dot">3</div>
+                  <span className="step-label">Assigned</span>
+                </div>
+                <div className={getStepClass("IN PROGRESS", detailData.request.status)}>
+                  <div className="step-dot">4</div>
+                  <span className="step-label">In Progress</span>
+                </div>
+                <div className={getStepClass("RESOLVED", detailData.request.status)}>
+                  <div className="step-dot">5</div>
+                  <span className="step-label">Resolved</span>
+                </div>
+                <div className={getStepClass("CLOSED", detailData.request.status)}>
+                  <div className="step-dot">6</div>
+                  <span className="step-label">Closed</span>
+                </div>
               </div>
-              <div className={getStepClass("UNDER REVIEW", detailData.request.status)}>
-                <div className="step-dot">2</div>
-                <span className="step-label">Review</span>
-              </div>
-              <div className={getStepClass("ASSIGNED", detailData.request.status)}>
-                <div className="step-dot">3</div>
-                <span className="step-label">Assigned</span>
-              </div>
-              <div className={getStepClass("IN PROGRESS", detailData.request.status)}>
-                <div className="step-dot">4</div>
-                <span className="step-label">In Progress</span>
-              </div>
-              <div className={getStepClass("RESOLVED", detailData.request.status)}>
-                <div className="step-dot">5</div>
-                <span className="step-label">Resolved</span>
-              </div>
-              <div className={getStepClass("CLOSED", detailData.request.status)}>
-                <div className="step-dot">6</div>
-                <span className="step-label">Closed</span>
-              </div>
-            </div>
+            )}
 
             <p style={{ fontSize: "14.5px", background: "rgba(255, 255, 255, 0.02)", padding: "18px", borderRadius: "8px", border: "1px solid var(--panel-border)", marginBottom: "20px" }}>
               {detailData.request.description}
             </p>
 
-            <div className="info-grid">
-              <div className="info-item">
-                <span className="info-label">Gedung / Ruang</span>
-                <span className="info-value">{detailData.request.location}</span>
-              </div>
-              <div className="info-item">
-                <span className="info-label">Kategori Masalah</span>
-                <span className="info-value">{detailData.request.category}</span>
-              </div>
-              <div className="info-item">
-                <span className="info-label">Prioritas Penanganan</span>
-                <span className="info-value">
-                  <span className={`badge ${getPriorityBadgeClass(detailData.request.priority)}`}>
-                    {detailData.request.priority}
+            {activeRole !== "Pelapor" ? (
+              <div className="info-grid">
+                <div className="info-item">
+                  <span className="info-label">Gedung / Ruang</span>
+                  <span className="info-value">{detailData.request.location}</span>
+                </div>
+                <div className="info-item">
+                  <span className="info-label">Kategori Masalah</span>
+                  <span className="info-value">{detailData.request.category}</span>
+                </div>
+                <div className="info-item">
+                  <span className="info-label">Prioritas Penanganan</span>
+                  <span className="info-value">
+                    <span className={`badge ${getPriorityBadgeClass(detailData.request.priority)}`}>
+                      {detailData.request.priority}
+                    </span>
                   </span>
-                </span>
+                </div>
+                <div className="info-item">
+                  <span className="info-label">Tanggal Pelaporan</span>
+                  <span className="info-value">{formatDate(detailData.request.created_at)}</span>
+                </div>
+                <div className="info-item" style={{ gridColumn: "span 2" }}>
+                  <span className="info-label">Teknisi Ditugaskan</span>
+                  <span className="info-value" style={{ color: "var(--accent-color)" }}>
+                    {detailData.request.assigned_technician || "Menunggu pendelegasian admin"}
+                  </span>
+                </div>
               </div>
-              <div className="info-item">
-                <span className="info-label">Tanggal Pelaporan</span>
-                <span className="info-value">{formatDate(detailData.request.created_at)}</span>
+            ) : (
+              <div style={{ padding: "16px", background: "rgba(255, 255, 255, 0.015)", borderRadius: "8px", border: "1px solid var(--panel-border)", margin: "24px 0", fontSize: "14px", display: "flex", flexDirection: "column", gap: "10px" }}>
+                <div>📍 <strong>Lokasi:</strong> {detailData.request.location}</div>
+                <div>📅 <strong>Tanggal Laporan:</strong> {formatDate(detailData.request.created_at)}</div>
+                <div>📌 <strong>Status:</strong> <span className={`badge ${getStatusBadgeClass(detailData.request.status)}`} style={{ display: "inline-block", marginLeft: "6px" }}>{detailData.request.status}</span></div>
               </div>
-              <div className="info-item" style={{ gridColumn: "span 2" }}>
-                <span className="info-label">Teknisi Ditugaskan</span>
-                <span className="info-value" style={{ color: "var(--accent-color)" }}>
-                  {detailData.request.assigned_technician || "Menunggu pendelegasian admin"}
-                </span>
-              </div>
-            </div>
+            )}
 
             {/* Logs timeline activity */}
-            <div style={{ marginTop: "30px" }}>
-              <h3 className="action-title" style={{ fontSize: "13px", color: "var(--text-secondary)" }}>Log Audit & Progres Pengerjaan</h3>
-              <div className="timeline">
-                {detailData.status_history.map((log) => (
-                  <div className="timeline-item" key={log.id}>
-                    <div className="timeline-marker"></div>
-                    <div className="timeline-content">
-                      <span className="timeline-text">
-                        Status berpindah dari <strong>{log.old_status}</strong> ke{" "}
-                        <strong>{log.new_status}</strong> oleh{" "}
-                        <strong>{log.changed_by_name}</strong> ({log.changed_by_role})
-                      </span>
-                      <div className="timeline-date">{formatDate(log.created_at)}</div>
+            {activeRole !== "Pelapor" && (
+              <div style={{ marginTop: "30px" }}>
+                <h3 className="action-title" style={{ fontSize: "13px", color: "var(--text-secondary)" }}>Log Audit & Progres Pengerjaan</h3>
+                <div className="timeline">
+                  {detailData.status_history.map((log) => (
+                    <div className="timeline-item" key={log.id}>
+                      <div className="timeline-marker"></div>
+                      <div className="timeline-content">
+                        <span className="timeline-text">
+                          Status berpindah dari <strong>{log.old_status}</strong> ke{" "}
+                          <strong>{log.new_status}</strong> oleh{" "}
+                          <strong>{log.changed_by_name}</strong> ({log.changed_by_role})
+                        </span>
+                        <div className="timeline-date">{formatDate(log.created_at)}</div>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
 
           {/* Sidebar panel for context actions and comments discussions */}
@@ -1175,7 +1186,7 @@ export default function App() {
                 {activeRole === "Pelapor" && (
                   <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                     <p className="text-secondary" style={{ fontSize: "13px" }}>
-                      Status laporan ini diproses oleh Administrator Sarpras. Anda dapat memberikan komentar balasan pada kotak diskusi di bawah ini.
+                      Status laporan ini diproses oleh Administrator Sarpras. Anda dapat memberikan komentar balasan pada kolom komentar di bawah ini.
                     </p>
                     {detailData.request.status === "RESOLVED" && (
                       <div style={{ marginTop: "8px", padding: "12px", background: "rgba(16, 185, 129, 0.08)", border: "1px solid rgba(16, 185, 129, 0.2)", borderRadius: "8px" }}>
@@ -1218,12 +1229,12 @@ export default function App() {
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" style={{ width: "16px", height: "16px", marginRight: "6px", display: "inline" }}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025 4.48 4.48 0 00-.224-.275C2.662 17.29 1 14.836 1 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" />
                 </svg>
-                Diskusi & Komentar
+                Komentar Laporan
               </h3>
               <div className="comments-container">
                 {detailData.comments.length === 0 ? (
                   <p className="text-muted" style={{ fontSize: "13px", padding: "10px 0" }}>
-                    Belum ada riwayat percakapan. Kirim komentar pertama Anda di bawah.
+                    Belum ada komentar. Kirim komentar pertama Anda di bawah.
                   </p>
                 ) : (
                   detailData.comments.map((comm) => (
