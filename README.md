@@ -74,6 +74,45 @@ SWE-campus-maintenance/
 
 ---
 
+## 📖 Panduan Skenario Penggunaan & Uji Coba Aktor (Simulasi Alur Kerja)
+
+Untuk menguji alur kerja perangkat lunak ini secara utuh dari awal sampai akhir, Anda dapat mengikuti skenario simulasi lintas peran berikut:
+
+### 1. Pelapor (Mahasiswa) - Membuat Laporan Baru
+1. Masuk ke aplikasi menggunakan username **`Lucia`** dan password **`lucia123`**.
+2. Di panel sebelah kiri, isi formulir pelaporan:
+   * **Laporan Kerusakan**: `AC Bocor di Kelas B302`
+   * **Deskripsi Masalah**: `AC mengeluarkan tetesan air cukup deras sejak pagi hari, menetes ke area meja mahasiswa paling belakang.` (minimal 20 karakter)
+   * **Lokasi Gedung**: `Gedung B`
+   * **Lokasi Ruangan**: `Ruang 302`
+3. Klik **Kirim Pengaduan**. Laporan baru akan terdaftar pada tabel di sisi kanan dengan nomor unik (contoh: `CSR-171939...`) dan berstatus **`SUBMITTED`**.
+
+### 2. Administrator - Memeriksa & Menugaskan Teknisi
+1. Klik **Keluar** di pojok kanan atas, lalu login sebagai **`Administrator`** (password: **`admin123`**).
+2. Temukan aduan baru dari `Lucia` pada daftar tabel, lalu klik aduan tersebut untuk membuka panel detail di sisi kanan.
+3. Klik tombol **Mulai Tinjauan (Start Review)**. Status laporan akan bertransisi ke **`UNDER REVIEW`**.
+4. Pada panel tindakan, tentukan kategori fasilitas (pilih **`AC`**) dan pilih teknisi pelaksana (pilih **`Andi`**).
+5. Klik **Simpan Penugasan**. Status laporan otomatis bertransisi ke **`ASSIGNED`** dan log audit tersimpan.
+
+### 3. Staf Teknisi (Andi) - Memproses & Menyelesaikan Pekerjaan
+1. Keluar dan login kembali sebagai staf teknisi **`Andi`** (password: **`andi123`**).
+2. Klik aduan ditugaskan `AC Bocor di Kelas B302` yang ada pada tabel untuk membuka detail laporan.
+3. Di sisi kanan, tentukan prioritas penanganan (pilih **`HIGH`**).
+4. Klik tombol **Mulai Bekerja (Start Work)**. Status laporan bertransisi ke **`IN PROGRESS`**.
+5. Setelah perbaikan selesai dilakukan di lapangan, klik tombol **Selesai Perbaikan (Resolve)**. Status laporan akan bertransisi ke **`RESOLVED`**.
+
+### 4. Pelapor & Administrator - Konfirmasi & Penutupan Tiket
+1. Login kembali sebagai Pelapor **`Lucia`** (password: **`lucia123`**).
+2. Klik aduan tersebut yang kini berstatus **`RESOLVED`**. Pada panel detail samping, klik tombol **Konfirmasi Perbaikan Selesai** untuk memberikan feedback bahwa AC sudah berfungsi normal.
+3. Login kembali sebagai **`Administrator`** (password: **`admin123`**).
+4. Klik aduan tersebut, lalu klik tombol **Tutup Laporan (Close)** pada panel detail. Status laporan bertransisi secara permanen menjadi **`CLOSED`** (Selesai sepenuhnya).
+
+### 5. Manajer Fasilitas (FM) - Pemantauan Eksekutif
+1. Login sebagai **`Manajer`** (password: **`manajer123`**).
+2. Manajer dapat memantau penambahan data aduan secara real-time pada 3 kartu metrik statistik utama, melihat persentase aduan berdasarkan grafik bar kategori, serta membaca log diskusi komentar di panel samping secara aman (*read-only*).
+
+---
+
 ## 💻 Panduan Instalasi & Menjalankan Lokal
 
 > [!IMPORTANT]
