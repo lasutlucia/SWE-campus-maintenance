@@ -117,4 +117,33 @@ npm run deploy
 
 ---
 
+## ✅ Checklist Setelah Deployment (Sesuai Ketentuan PDF Page 16)
+- [x] **Aplikasi dapat dibuka melalui URL publik**: Link Cloudflare Workers aktif.
+- [x] **Form laporan dapat digunakan**: Formulir "Laporan Kerusakan" di dashboard Pelapor berfungsi menyimpan data ke database D1.
+- [x] **API dapat menerima data**: Router Worker (`worker/index.ts`) memproses method GET/POST/PUT/DELETE.
+- [x] **Data tersimpan di D1**: Kueri SQL berjalan pada Cloudflare D1.
+- [x] **Tidak ada token atau password di GitHub**: Kredensial sensitif diamankan (menggunakan D1 bindings di Workers).
+- [x] **Test di GitHub Actions lulus**: Seluruh 20 Vitest unit test otomatis PASS pada alur CI/CD.
+- [x] **README berisi URL aplikasi**: Tercantum tautan proyek di bagian atas dan bagian deployment.
+- [x] **Traceability matrix diperbarui**: Tersimpan di berkas `docs/requirements/traceability.md`.
+- [x] **Release note dibuat**: Didokumentasikan lengkap pada berkas `docs/requirements/change_request.md` dan `walkthrough.md`.
+- [x] **Keterbatasan sistem dituliskan**: Tercantum di berkas `CASE.md` dan `README.md`.
+
+---
+
+## 🔍 Panduan Penanganan Masalah (Troubleshooting / Error yang Sering Terjadi)
+
+| Error | Penyebab Umum | Solusi Pemula |
+| :--- | :--- | :--- |
+| `node: command not found` | Node.js belum terbaca di sistem PATH. | Instal Node.js dari situs resmi, tutup Terminal/VS Code, lalu buka kembali. |
+| `npm run dev gagal` | Modul dependensi belum terinstal sempurna. | Jalankan perintah `npm install` terlebih dahulu. |
+| `no such table` | Berkas migrasi database lokal D1 belum dieksekusi. | Jalankan perintah `npm run db:setup` untuk inisialisasi tabel lokal. |
+| `DB is undefined` | Binding D1 belum terkonfigurasi dengan benar di `wrangler.jsonc`. | Periksa kesamaan nama binding `DB` dan `database_id` di berkas `wrangler.jsonc`. |
+| `404 pada /api/requests` | Handler rute Worker belum diimplementasikan atau server lokal mati. | Periksa kecocokan rute di `worker/index.ts` dan jalankan kembali `npm run dev`. |
+| `Data hilang setelah deploy` | Migrasi database produksi Cloudflare D1 belum dijalankan. | Jalankan perintah D1 execute ke remote dengan opsi `--remote`. |
+| `Git push ditolak` | Terjadi ketidakcocokan riwayat commit lokal dengan repositori GitHub. | Lakukan `git pull` atau gunakan `--force` jika Anda melakukan penggabungan/amend riwayat. |
+| `GitHub Actions gagal` | Terdapat kegagalan kompilasi TypeScript atau test case ada yang gagal (FAIL). | Periksa tab log detail job GitHub Actions yang merah untuk melihat baris kode penyebab error. |
+
+---
+
 *Proyek ini dikembangkan secara kolaboratif bersama asisten coding AI Google DeepMind Team - Antigravity.*
