@@ -3,7 +3,7 @@
 Sistem Pengaduan dan Pemeliharaan Sarana Prasarana Kampus (*Campus Service Request and Maintenance System*) adalah aplikasi berbasis web modern yang dirancang untuk mendigitalisasi, melacak, dan mempercepat penanganan keluhan fasilitas di lingkungan kampus secara real-time.
 
 Aplikasi ini telah ter-deploy secara publik dan dapat diakses melalui link berikut:
-👉 **[Live Demo di Cloudflare Workers](https://campus-maintenance.lasutlucia.workers.dev)**
+👉 **[Campus Service Request and Maintenance System](https://campus-maintenance.lasutlucia.workers.dev)**
 
 ---
 
