@@ -5,7 +5,7 @@ Dokumen ini mendefinisikan antarmuka API (endpoints) yang dilayani oleh Cloudfla
 ## Simulasi Identitas Aktor
 Untuk mendukung *multi-role switcher* tanpa sistem login berbayar, setiap request modifikasi data (tambah komentar, ubah status) harus menyertakan HTTP request headers berikut:
 - `X-User-Role`: Peran aktif aktor pengirim (`Pelapor`, `Administrator`, `Teknisi`).
-- `X-User-Name`: Nama pengguna pengirim (misal: `Rian (Mahasiswa)`, `Admin Sarpras`, `Budi (Teknisi)`).
+- `X-User-Name`: Nama pengguna pengirim (misal: `Rian (Mahasiswa)`, `Admin`, `Budi (Teknisi)`).
 
 ---
 
@@ -113,7 +113,7 @@ Mengambil data detail keluhan beserta seluruh komentar dan log riwayat statusnya
           "old_status": "SUBMITTED",
           "new_status": "UNDER REVIEW",
           "changed_by_role": "Administrator",
-          "changed_by_name": "Admin Sarpras",
+          "changed_by_name": "Admin",
           "created_at": "2026-06-26T12:05:00Z"
         },
         {
@@ -121,7 +121,7 @@ Mengambil data detail keluhan beserta seluruh komentar dan log riwayat statusnya
           "old_status": "UNDER REVIEW",
           "new_status": "ASSIGNED",
           "changed_by_role": "Administrator",
-          "changed_by_name": "Admin Sarpras",
+          "changed_by_name": "Admin",
           "created_at": "2026-06-26T12:10:00Z"
         }
       ]
@@ -162,7 +162,7 @@ Memperbarui status, prioritas, kategori, atau penugasan teknisi. Endpoint ini ju
 - **URL**: `/api/requests/:id/status`
 - **Headers**:
   - `X-User-Role`: `Administrator`
-  - `X-User-Name`: `Admin Sarpras`
+  - `X-User-Name`: `Admin`
 - **Request Body**:
   ```json
   {
