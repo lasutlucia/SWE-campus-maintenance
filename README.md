@@ -1,105 +1,104 @@
-# 🏫 Campus Maintenance System - Service Request & Maintenance
-
-Sistem Pengaduan dan Pemeliharaan Sarana Prasarana Kampus (*Campus Service Request and Maintenance System*) adalah aplikasi berbasis web modern yang dirancang untuk mendigitalisasi, melacak, dan mempercepat penanganan keluhan fasilitas di lingkungan kampus secara real-time.
-
-Aplikasi ini telah ter-deploy secara publik dan dapat diakses melalui link berikut:
-👉 **[Campus Service Request and Maintenance System](https://campus-maintenance.lasutlucia.workers.dev)**
+# 🏫 Campus Maintenance System
+> **Campus Service Request and Maintenance System**
+> 
+> *Sistem Pengaduan dan Pemeliharaan Sarana Prasarana Kampus berbasis Cloudflare Workers, D1 Database, dan React.*
 
 ---
 
-## 🚀 Fitur Utama & Keunggulan Sistem
+## 📊 Status Proyek & Deployment
 
-Sistem ini memfasilitasi kolaborasi erat antara 4 peran utama secara terintegrasi:
-*   **Pelapor (Mahasiswa & Dosen)**: Membuat laporan kerusakan dengan input lokasi terpisah (Gedung & Ruangan), memantau status aduan secara interaktif, berdiskusi di kolom komentar, dan memberikan konfirmasi selesai.
-*   **Administrator**: Melakukan peninjauan aduan (`UNDER REVIEW`), menentukan klasifikasi kategori fasilitas, menunjuk Teknisi pelaksana (`ASSIGNED`), serta menutup aduan secara formal (`CLOSED`).
-*   **Staf Teknisi**: Menentukan prioritas penanganan (`LOW`/`MEDIUM`/`HIGH`), memperbarui status pengerjaan (`IN PROGRESS`), menyelesaikan perbaikan (`RESOLVED`), dan memberikan catatan pengerjaan.
-*   **Manajer Fasilitas (FM)**: Memantau ringkasan statistik (total laporan, status pengerjaan, aduan selesai), grafik visualisasi kategori, dan log percakapan aduan secara *read-only*.
+![Vite Version](https://img.shields.io/badge/Vite-8.x-646CFF?logo=vite&style=flat-square)
+![React Version](https://img.shields.io/badge/React-19.x-61DAFB?logo=react&style=flat-square)
+![Cloudflare Workers](https://img.shields.io/badge/Cloudflare_Workers-Active-F38020?logo=cloudflare&style=flat-square)
+![Cloudflare D1 Database](https://img.shields.io/badge/Cloudflare_D1-Connected-F38020?logo=cloudflare&style=flat-square)
+![Vitest Tests](https://img.shields.io/badge/Tests-20_Passed-30A64A?logo=vitest&style=flat-square)
+![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
 
-### 💎 Inisiatif Fitur Premium Tambahan (AI-Enhanced):
-*   **Pencarian Pintar & Highlight Denyut Neon (*Pulsing Glow*)**: Mengetik kata kunci pencarian akan mengurutkan aduan paling cocok ke posisi teratas dan memberikan visual berdenyut menyala (*pulsing*) tanpa interupsi membuka detail aduan secara paksa.
-*   **Tema Gelap/Terang (*Dark/Light Mode Theme Switcher*)**: Pengalih warna antarmuka yang tersimpan otomatis di `localStorage`.
-*   **Bar Progres Validasi Karakter**: Umpan balik visual real-time di kolom deskripsi formulir aduan untuk memastikan panjang teks memenuhi batas minimum 20 karakter.
-*   **Sinkronisasi Real-Time (4s Auto-Polling)**: Pembaruan data tabel dan log komentar di latar belakang setiap 4 detik untuk mendukung alur diskusi interaktif lintas peran.
-*   **Zona Waktu WITA**: Semua timestamp jam pembuatan aduan, pembaruan status, dan komentar diselaraskan secara konsisten ke zona waktu Waktu Indonesia Tengah (UTC+8).
+*   **Tautan Aplikasi (Cloudflare Workers)**: 👉 **[Campus Service Request and Maintenance System](https://campus-maintenance.lasutlucia.workers.dev)**
+*   **Repositori GitHub**: 👉 **[SWE-campus-maintenance](https://github.com/lasutlucia/SWE-campus-maintenance)**
+*   **Commit Terakhir**: `Lihat di repositori GitHub (Cabang main)`
 
 ---
 
-## 🛠️ Spesifikasi Teknologi (*Tech Stack*)
+## 🚀 Fitur Utama & Segregasi Peran
 
-*   **Frontend**: React.js 18 (Vite) + TypeScript
-*   **Styling**: Vanilla CSS (Modern CSS Custom Properties, Flexbox, Grid, Glassmorphic Glass-Blur, Keyframe Animations)
-*   **Backend API**: Cloudflare Workers (Serverless Runtime)
-*   **Database**: Cloudflare D1 (Serverless Relational SQL Database)
-*   **Testing Framework**: Vitest (Unit & Integration Testing)
+Aplikasi ini membagi alur kerja secara kolaboratif menjadi 4 peran aktor utama dengan tingkat hak akses yang disesuaikan secara ketat:
+
+| Peran Aktor | Modul Fitur Utama | Batas Akses & Keamanan |
+| :--- | :--- | :--- |
+| **Mahasiswa & Dosen (Pelapor)** | Pembuatan Laporan Kerusakan, Detail Alur Laporan Sederhana, Percakapan Komentar, Konfirmasi Selesai | Dapat membuat aduan secara bebas dengan validasi deskripsi > 20 karakter & input Gedung/Ruang terpisah. |
+| **Administrator** | Peninjauan Aduan (`UNDER REVIEW`), Klasifikasi Kategori, Penugasan Staf Teknisi (`ASSIGNED`), Penutupan Tiket (`CLOSED`) | Berhak mengubah kategori fasilitas, menugaskan teknisi dari data D1, dan menutup laporan pasca konfirmasi. |
+| **Staf Teknisi** | Penentuan Prioritas (`LOW`/`MEDIUM`/`HIGH`), Progres Pengerjaan (`IN PROGRESS`), Penyelesaian Kerja (`RESOLVED`) | Hanya dapat memproses aduan yang ditugaskan kepada dirinya. Memegang hak eksklusif penyelesaian teknis. |
+| **Manajer Fasilitas (FM)** | Dashboard Statistik Executive, Grafik Bar Analisis Kategori, Pemantauan Log Diskusi Komentar | Akses bersifat **Read-Only** untuk tujuan pemantauan (monitoring) tanpa hak manipulasi data aduan. |
+
+### 💎 Inovasi Fitur Tambahan (AI-Enhanced UX)
+*   **Dark/Light Mode Switcher**: Tombol pengalih tema dinamis yang persisten (tersimpan di `localStorage` browser).
+*   **Character Counter Validation Bar**: Bar indikator visual interaktif di bawah input deskripsi aduan (berwarna merah saat < 20 karakter, hijau centang saat memenuhi syarat).
+*   **Pulsing Glow Search Matches**: Baris tabel aduan yang cocok dengan kata kunci pencarian (misal: "AC") akan menyala berdenyut secara visual sebagai isyarat fokus, tanpa membuka panel samping detail secara paksa.
+*   **Auto-Polling Real-Time (4 Detik)**: Pengambilan data berkala di latar belakang pada tabel dan percakapan komentar untuk menjaga sinkronisasi status antar-aktor.
+*   **Zona Waktu WITA**: Sinkronisasi seluruh catatan waktu (pembuatan laporan, perubahan status, komentar) ke format Waktu Indonesia Tengah (UTC+8).
 
 ---
 
-## 📁 Struktur Repositori
+## 📁 Struktur Direktori Repositori
 
-Struktur direktori repositori ini dirancang secara sistematis sesuai standar rekayasa perangkat lunak:
 ```text
 SWE-campus-maintenance/
-├── .github/              # Alur kerja otomasi CI/CD (GitHub Actions)
-├── docs/                 # Dokumentasi rekayasa perangkat lunak
-│   ├── requirements/     # Inception, Elicitation, Specification (SRS), MoSCoW, Traceability, CR
+├── .github/
+│   └── workflows/        # Otomasi CI/CD Test & Build (GitHub Actions)
+├── docs/                 # Dokumentasi rekayasa perangkat lunak lengkap
+│   ├── requirements/     # Inception, Elicitation, Specification, Prioritization, Validation, Traceability, CR
 │   └── design/           # Architecture, Database Schema, REST API, UI Flow, Wireframe
-├── database/             # Skema D1 SQLite Migrations (schema.sql & seed.sql)
+├── database/             # Berkas skema SQL & Seed data untuk Cloudflare D1
+│   ├── schema.sql
+│   └── seed.sql
 ├── src/                  # Kode sumber Frontend React (TypeScript & CSS)
-├── worker/               # Kode sumber Backend Serverless Worker (TypeScript & D1 queries)
-├── tests/                # Automated Test Cases (Vitest)
-├── CASE.md               # Laporan ringkas pengumpulan & jawaban refleksi tugas
-├── wrangler.jsonc        # File konfigurasi deployment Cloudflare Workers
-└── README.md             # Dokumen panduan utama sistem (file ini)
+├── worker/               # Kode sumber Backend Worker (TypeScript Serverless API Router)
+├── tests/                # Uji unit otomatis (Vitest)
+├── wrangler.jsonc        # Konfigurasi deployment serverless Cloudflare Workers
+├── CASE.md               # Laporan pengumpulan resmi & jawaban 8 pertanyaan refleksi
+└── README.md             # Dokumen panduan utama ini
 ```
 
 ---
 
-## 🔑 Kredensial Pengguna untuk Pengujian
+## 🔑 Kredensial Akun untuk Pengujian
 
-Gunakan akun simulasi di bawah ini untuk mencoba alur kerja antar-aktor pada halaman login aplikasi:
-
-| Peran Aktor (Role) | Nama Pengguna (Username) | Kata Sandi (Password) |
+| Aktor Pengguna | Nama Pengguna (Username) | Kata Sandi (Password) |
 | :--- | :--- | :--- |
 | **Pelapor (Mahasiswa)** | `Lucia` | `lucia123` |
 | **Pelapor (Dosen)** | `Dosen` | `dosen123` |
 | **Staf Teknisi** | `Andi` | `andi123` |
 | **Administrator** | `Administrator` | `admin123` |
-| **Manajer Fasilitas** | `Manajer` | `manajer123` |
+| **Manajer Fasilitas (FM)** | `Manajer` | `manajer123` |
 
 ---
 
-## 💻 Panduan Menjalankan Secara Lokal (*Local Setup*)
+## 💻 Panduan Instalasi & Menjalankan Lokal
 
-### Prasyarat:
-*   [Node.js](https://nodejs.org/) (versi 18 ke atas)
-*   NPM (bawaan Node.js)
+> [!IMPORTANT]
+> Pastikan komputer Anda telah terinstal [Node.js](https://nodejs.org/) (versi 18+) dan NPM.
 
 ### 1. Kloning Repositori & Instal Dependensi
 ```bash
-# Clone repositori ini
 git clone https://github.com/lasutlucia/SWE-campus-maintenance.git
 cd SWE-campus-maintenance
-
-# Install semua modul dependensi
 npm install
 ```
 
 ### 2. Jalankan Migrasi Database D1 Lokal
-Untuk menyimulasikan database relasional di komputer lokal Anda, jalankan perintah berikut:
+Untuk membuat database lokal simulasi di komputer Anda:
 ```bash
-# Inisialisasi skema tabel & data seed awal pada SQLite lokal wrangler
 npm run db:setup
 ```
 
-### 3. Jalankan Server Pengembangan (Local Dev Server)
-Jalankan server frontend dan API backend secara bersamaan secara lokal:
+### 3. Jalankan Server Pengembangan (Vite + Cloudflare Plugin)
 ```bash
 npm run dev
 ```
-Buka **[http://localhost:5173](http://localhost:5173)** pada browser Anda untuk menjalankan aplikasi.
+Setelah server aktif, buka **[http://localhost:5173](http://localhost:5173)** pada browser Anda.
 
-### 4. Menjalankan Pengujian Otomatis (Vitest)
-Untuk memverifikasi fungsionalitas validasi formulir dan aturan bisnis status berjalan dengan benar:
+### 4. Eksekusi Unit Test Otomatis (Vitest)
 ```bash
 npm run test
 ```
@@ -108,26 +107,25 @@ npm run test
 
 ## ☁️ Panduan Deployment ke Cloudflare Workers
 
-Aplikasi ini dikonfigurasi untuk dapat dideploy langsung ke akun Cloudflare Anda. Pastikan Anda sudah login ke CLI wrangler menggunakan `npx wrangler login`.
-
-Untuk meluncurkan pembaruan terbaru ke Cloudflare secara otomatis:
+Pastikan Anda sudah login ke wrangler menggunakan perintah `npx wrangler login`. Untuk melakukan deploy frontend & backend secara instan:
 ```bash
 npm run deploy
 ```
 
 ---
 
-## ✅ Checklist Setelah Deployment (Sesuai Ketentuan PDF Page 16)
-- [x] **Aplikasi dapat dibuka melalui URL publik**: Link Cloudflare Workers aktif.
-- [x] **Form laporan dapat digunakan**: Formulir "Laporan Kerusakan" di dashboard Pelapor berfungsi menyimpan data ke database D1.
-- [x] **API dapat menerima data**: Router Worker (`worker/index.ts`) memproses method GET/POST/PUT/DELETE.
-- [x] **Data tersimpan di D1**: Kueri SQL berjalan pada Cloudflare D1.
-- [x] **Tidak ada token atau password di GitHub**: Kredensial sensitif diamankan (menggunakan D1 bindings di Workers).
-- [x] **Test di GitHub Actions lulus**: Seluruh 20 Vitest unit test otomatis PASS pada alur CI/CD.
-- [x] **README berisi URL aplikasi**: Tercantum tautan proyek di bagian atas dan bagian deployment.
-- [x] **Traceability matrix diperbarui**: Tersimpan di berkas `docs/requirements/traceability.md`.
-- [x] **Release note dibuat**: Didokumentasikan lengkap pada berkas `docs/requirements/change_request.md` dan `walkthrough.md`.
-- [x] **Keterbatasan sistem dituliskan**: Tercantum di berkas `CASE.md` dan `README.md`.
+## ✅ Checklist Setelah Deployment (Sesuai Ketentuan PDF Halaman 16)
+
+- [x] **Aplikasi dapat dibuka melalui URL publik**: Terhubung secara aman di subdomain workers.dev.
+- [x] **Form laporan dapat digunakan**: Menyimpan data pengaduan ke tabel database D1 Cloudflare.
+- [x] **API dapat menerima data**: Router endpoints Workers memproses method GET, POST, PUT, dan DELETE.
+- [x] **Data tersimpan di D1**: Log riwayat status dan komentar tersimpan di Cloudflare D1.
+- [x] **Tidak ada token atau password di GitHub**: Menggunakan Cloudflare D1 environment bindings untuk keamanan.
+- [x] **Test di GitHub Actions lulus**: Alur kerja CI/CD berjalan tanpa kegagalan (100% Green).
+- [x] **README berisi URL aplikasi**: Tersemat link URL di bagian atas dan bagian deployment.
+- [x] **Traceability matrix diperbarui**: Didokumentasikan lengkap pada berkas `traceability.md`.
+- [x] **Release note dibuat**: Didokumentasikan pada berkas `change_request.md` dan `walkthrough.md`.
+- [x] **Keterbatasan sistem dituliskan**: Tercantum di berkas `CASE.md`.
 
 ---
 
@@ -135,14 +133,14 @@ npm run deploy
 
 | Error | Penyebab Umum | Solusi Pemula |
 | :--- | :--- | :--- |
-| `node: command not found` | Node.js belum terbaca di sistem PATH. | Instal Node.js dari situs resmi, tutup Terminal/VS Code, lalu buka kembali. |
-| `npm run dev gagal` | Modul dependensi belum terinstal sempurna. | Jalankan perintah `npm install` terlebih dahulu. |
-| `no such table` | Berkas migrasi database lokal D1 belum dieksekusi. | Jalankan perintah `npm run db:setup` untuk inisialisasi tabel lokal. |
-| `DB is undefined` | Binding D1 belum terkonfigurasi dengan benar di `wrangler.jsonc`. | Periksa kesamaan nama binding `DB` dan `database_id` di berkas `wrangler.jsonc`. |
-| `404 pada /api/requests` | Handler rute Worker belum diimplementasikan atau server lokal mati. | Periksa kecocokan rute di `worker/index.ts` dan jalankan kembali `npm run dev`. |
-| `Data hilang setelah deploy` | Migrasi database produksi Cloudflare D1 belum dijalankan. | Jalankan perintah D1 execute ke remote dengan opsi `--remote`. |
-| `Git push ditolak` | Terjadi ketidakcocokan riwayat commit lokal dengan repositori GitHub. | Lakukan `git pull` atau gunakan `--force` jika Anda melakukan penggabungan/amend riwayat. |
-| `GitHub Actions gagal` | Terdapat kegagalan kompilasi TypeScript atau test case ada yang gagal (FAIL). | Periksa tab log detail job GitHub Actions yang merah untuk melihat baris kode penyebab error. |
+| `node: command not found` | Node.js belum ditambahkan ke sistem environment PATH. | Unduh & instal Node.js, tutup semua terminal, lalu buka kembali terminal Anda. |
+| `npm run dev gagal` | Dependensi modul `node_modules` belum terinstal atau corrupt. | Hapus folder `node_modules` lalu jalankan perintah `npm install`. |
+| `no such table` | Migrasi skema database D1 simulasi lokal belum dijalankan. | Jalankan perintah `npm run db:setup` untuk memuat schema & data awal. |
+| `DB is undefined` | Nama binding D1 di `wrangler.jsonc` tidak cocok dengan pemanggilan kode backend. | Pastikan nama binding pada `wrangler.jsonc` bernilai `DB` (huruf kapital). |
+| `404 pada /api/requests` | Rute backend Workers belum terdaftar atau server Vite tidak memuat plugin Cloudflare. | Jalankan `npm run dev` untuk memastikan plugin `@cloudflare/vite-plugin` berjalan. |
+| `Data hilang setelah deploy` | Migrasi database Cloudflare D1 produksi belum dieksekusi. | Jalankan perintah eksekusi SQL migrasi ke remote menggunakan flag `--remote`. |
+| `Git push ditolak` | Terdapat perubahan terbaru di remote main branch yang belum Anda tarik ke lokal. | Lakukan `git pull origin main` terlebih dahulu, atau gunakan `--force` jika riwayat diubah. |
+| `GitHub Actions gagal` | Kompilasi tipe TypeScript gagal atau unit test tidak lolos (FAIL). | Periksa baris kode error pada tab log rincian job GitHub Actions yang berwarna merah. |
 
 ---
 
