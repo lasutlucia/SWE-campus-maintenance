@@ -458,7 +458,7 @@ export default function App() {
             <div className="brand-section" style={{ display: "flex", alignItems: "center", gap: "16px", textAlign: "left", flex: 1 }}>
               <div className="brand-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor" style={{ width: "24px", height: "24px", color: "#fff" }}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M11.42 15.17L17.25 21A2.67 2.67 0 0021 17.25l-5.83-5.83m-3.75 3.75l-3.75-3.75m3.75 3.75l1.58-1.58m-5.33-2.17l-5.83-5.83A2.67 2.67 0 015.75 3L11.58 8.83m-3.75 3.75l3.75 3.75m-3.75-3.75l-1.58 1.58m5.33 2.17l5.83 5.83A2.67 2.67 0 0118.25 21l-5.83-5.83m-3.75-3.75l3.75-3.75" />
                 </svg>
               </div>
               <div className="brand-text">
